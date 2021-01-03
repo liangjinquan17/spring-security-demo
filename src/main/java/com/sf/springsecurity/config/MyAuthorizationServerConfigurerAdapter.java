@@ -82,7 +82,7 @@ public class MyAuthorizationServerConfigurerAdapter extends AuthorizationServerC
         // 添加tokenEnhancer
         endpoints.tokenEnhancer(enhancerChain);
         // 添加自定义授权方式
-//        endpoints.tokenGranter(new MyTokenGranter(authenticationManager, endpoints.getTokenServices()));
+        endpoints.tokenGranter(new MyTokenGranter(authenticationManager, endpoints.getTokenServices()));
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class MyAuthorizationServerConfigurerAdapter extends AuthorizationServerC
                 .scopes("admin", "user")
                 .accessTokenValiditySeconds(1300)
                 .refreshTokenValiditySeconds(3600)
-                .authorizedGrantTypes("refresh_token", "password");
+                .authorizedGrantTypes("refresh_token", "password", "verificationCode");
     }
 
 
