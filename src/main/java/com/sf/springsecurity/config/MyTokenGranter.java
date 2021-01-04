@@ -27,7 +27,6 @@ public class MyTokenGranter implements TokenGranter{
 	@SuppressWarnings("deprecation")
 	@Override
 	public OAuth2AccessToken grant(String grantType, TokenRequest tokenRequest) {
-		System.out.println("grantType:"+grantType);
 		if(!this.grantType.equals(grantType)) {
 			return null;
 		}
@@ -36,19 +35,18 @@ public class MyTokenGranter implements TokenGranter{
 		String username = parameters.get("username");
 		String code = parameters.get("code");
 		
-		System.out.println("grantType:"+grantType+"username:"+username+"  code:"+code);
+		if(!"123456".equals(code)) {return null;}
 		
-		
+		// todo 调用校验列表校验登录数据
 		Authentication authentication = new MyAuthentication(username, null, username, null, null, false);
-//		authentication = authenticationManager.authenticate(authentication);
-		
-		return tokenServices.createAccessToken(new OAuth2Authentication(new OAuth2Request(null, "client", null, true, null, null, null, null, null), authentication));
+		authentication = authenticationManager.authenticate(authentication);
+		if(null == authentication) {
+			return null;
+		}
+		// todo 校验成功后，通过tokenservice生成token
+		return tokenServices.createAccessToken(new OAuth2Authentication(
+				new OAuth2Request(null, "client", null, true, null, null, null, null, null), authentication));
 	}
 
-//	protected MyTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
-//			OAuth2RequestFactory requestFactory, String grantType) {
-//		super(tokenServices, clientDetailsService, requestFactory, grantType);
-//		// TODO Auto-generated constructor stub
-//	}
 
 }

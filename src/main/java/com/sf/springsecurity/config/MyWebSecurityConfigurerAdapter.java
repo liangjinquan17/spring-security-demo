@@ -34,6 +34,8 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("admin");
+		// 添加校验调用者
+		auth.authenticationProvider(new MyAuthenticationProvider());
 	}
 	
 	@Override
